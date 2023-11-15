@@ -1,4 +1,5 @@
 // Importación de bibliotecas externas
+import { BrowserRouter as Router } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom/client";
 
@@ -11,7 +12,10 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </AuthProvider>
   </React.StrictMode>
 );
+
