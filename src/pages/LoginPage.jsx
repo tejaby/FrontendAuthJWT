@@ -1,13 +1,17 @@
 // Importación de bibliotecas externas
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import React from "react";
+import { useState } from "react";
+
+// Importación de services
+import { loginService } from "../services/UserServices";
 
 // Importación de Context
 import { useAuth } from "../context/AuthContext";
 
 function LoginPage() {
-  const { login } = useAuth();
+  const { setUser, setToken } = useAuth();
+  const [error, setError] = useState(null);
   const {
     register,
     handleSubmit,
@@ -16,10 +20,16 @@ function LoginPage() {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    login();
-    navigate("/");
+  const onSubmit = async (data) => {
+    loginService(data)
+      .then((response) => {
+        setUser(response.token);
+        setToken(response.user);
+        navigate('/')
+      })
+      .catch((err) => {
+        setError(err.data);
+      });
   };
 
   return (

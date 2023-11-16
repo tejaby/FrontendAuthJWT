@@ -6,8 +6,8 @@ import React from "react";
 import { useAuth } from "../context/AuthContext";
 
 export const PublicRoutes = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  if (isAuthenticated) {
+  const { user } = useAuth();
+  if (user) {
     return <Navigate to="/" />;
   }
   return children;

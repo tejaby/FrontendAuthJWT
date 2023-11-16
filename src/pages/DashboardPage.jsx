@@ -6,9 +6,9 @@ import React from "react";
 import { useAuth } from "../context/AuthContext";
 
 function DashboardPage() {
-  const { isAuthenticated } = useAuth();
+  const { user } = useAuth();
 
-  if (!isAuthenticated) {
+  if (!user) {
     return <Navigate to="/login" />;
   }
 

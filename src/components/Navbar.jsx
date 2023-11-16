@@ -22,8 +22,6 @@ const pages = ["Home", "Profile", "Dashboard"];
 const settings = ["Home", "Profile", "Dashboard", "Logout"];
 
 export const Navbar = () => {
-  const { isAuthenticated } = useAuth();
-
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
