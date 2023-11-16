@@ -1,6 +1,5 @@
 // Importación de libraries
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -14,16 +13,23 @@ import {
   Tooltip,
   MenuItem,
 } from "@mui/material";
+import { useState } from "react";
+
+// Importación de services
+import { logoutService } from "../services/UserServices";
 
 // Importación de Context
 import { useAuth } from "../context/AuthContext";
 
 const pages = ["Home", "Profile", "Dashboard"];
-const settings = ["Home", "Profile", "Dashboard", "Logout"];
+const settings = ["Profile", "Logout"];
 
 export const Navbar = () => {
+  const { user, setUser, token, setToken } = useAuth();
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -38,6 +44,17 @@ export const Navbar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const onSubmit = () => {
+    logoutService({ refresh: token.refresh }, token.access)
+      .then(() => {
+        setUser(null);
+        setToken(null);
+      })
+      .catch((err) => {
+        setError(err.data);
+      });
   };
 
   return (
@@ -165,18 +182,26 @@ export const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    <NavLink
-                      style={{ color: "black", textDecoration: "none" }}
-                      to={setting}
-                    >
-                      {setting}
-                    </NavLink>
+              {user ? ( // Verifica si el usuario está autenticado
+                settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">
+                      <Link
+                        style={{ color: "black", textDecoration: "none" }}
+                        onClick={onSubmit}
+                      >
+                        {setting}
+                      </Link>
+                    </Typography>
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography variant="body1" color="error" textAlign="center">
+                    Please log in to view settings
                   </Typography>
                 </MenuItem>
-              ))}
+              )}
             </Menu>
           </Box>
         </Toolbar>

@@ -23,8 +23,8 @@ function LoginPage() {
   const onSubmit = async (data) => {
     loginService(data)
       .then((response) => {
-        setUser(response.token);
-        setToken(response.user);
+        setUser(response.user);
+        setToken(response.token);
         navigate('/')
       })
       .catch((err) => {

@@ -7,6 +7,17 @@ export const loginService = async (user) => {
     .post(`${apiUrl}login/`, user)
     .then((response) => response.data)
     .catch((err) => {
-      throw err.response
+      throw err.response;
+    });
+};
+
+export const logoutService = (refresh, access) => {
+  return axios
+    .post(`${apiUrl}logout/`, refresh, {
+      headers: { Authorization: `Bearer ${access}` },
+    })
+    .then((response) => response.data)
+    .catch((err) => {
+      throw err.response;
     });
 };
