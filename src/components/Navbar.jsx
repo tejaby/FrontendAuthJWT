@@ -30,7 +30,6 @@ export const Navbar = () => {
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [error, setError] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -48,7 +47,7 @@ export const Navbar = () => {
   };
 
   const onSubmit = () => {
-    logoutService({ refresh: token.refresh }, token.access)
+    logoutService({ refresh: token.refresh })
       .then((response) => {
         toast.success(response.message, {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -56,20 +55,19 @@ export const Navbar = () => {
           pauseOnFocusLoss: false,
           pauseOnHover: false,
         });
-        localStorage.removeItem("authTokens");
-        localStorage.removeItem("user");
         setTimeout(() => {
           setUser(null);
           setToken(null);
-        }, 2000);
+          localStorage.removeItem("authTokens");
+          localStorage.removeItem("user");
+        }, 1000);
       })
       .catch((err) => {
-        setError(err.data.errors);
         setUser(null);
         setToken(null);
         localStorage.removeItem("authTokens");
         localStorage.removeItem("user");
-        toast.error(error, {
+        toast.error(err.data.errors, {
           position: toast.POSITION.BOTTOM_CENTER,
           autoClose: 3000,
           pauseOnFocusLoss: false,

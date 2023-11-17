@@ -11,11 +11,9 @@ export const loginService = (user) => {
     });
 };
 
-export const logoutService = (refresh, access) => {
+export const logoutService = (refresh) => {
   return axios
-    .post(`${apiUrl}logout/`, refresh, {
-      headers: { Authorization: `Bearer ${access}` },
-    })
+    .post(`${apiUrl}logout/`, refresh)
     .then((response) => response.data)
     .catch((err) => {
       throw err.response;

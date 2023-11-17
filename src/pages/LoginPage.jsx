@@ -12,7 +12,7 @@ import { useAuth } from "../context/AuthContext";
 
 function LoginPage() {
   const { setUser, setToken } = useAuth();
-  const [error, setError] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -24,8 +24,6 @@ function LoginPage() {
   const onSubmit = async (data) => {
     loginService(data)
       .then((response) => {
-        localStorage.setItem("authTokens", JSON.stringify(response.token));
-        localStorage.setItem("user", JSON.stringify(response.user));
         toast.success(response.message, {
           position: toast.POSITION.BOTTOM_CENTER,
           autoClose: 3000,
@@ -35,12 +33,13 @@ function LoginPage() {
         setTimeout(() => {
           setUser(response.user);
           setToken(response.token);
+          localStorage.setItem("authTokens", JSON.stringify(response.token));
+          localStorage.setItem("user", JSON.stringify(response.user));
           navigate("/");
         }, 1000);
       })
       .catch((err) => {
-        setError(err.data.errors);
-        toast.error(error, {
+        toast.error(err.data.errors, {
           position: toast.POSITION.BOTTOM_CENTER,
           autoClose: 3000,
           pauseOnFocusLoss: false,
