@@ -19,3 +19,12 @@ export const logoutService = (refresh) => {
       throw err.response;
     });
 };
+
+export const refreshService = (refresh) => {
+  return axios
+    .post(`${apiUrl}refresh/`, refresh)
+    .then((response) => response.data)
+    .catch((err) => {
+      throw err.response;
+    });
+};

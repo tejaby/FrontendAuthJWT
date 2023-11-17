@@ -51,25 +51,25 @@ export const Navbar = () => {
       .then((response) => {
         toast.success(response.message, {
           position: toast.POSITION.BOTTOM_CENTER,
-          autoClose: 1000,
+          autoClose: 2000,
           pauseOnFocusLoss: false,
           pauseOnHover: false,
         });
         setTimeout(() => {
           setUser(null);
           setToken(null);
-          localStorage.removeItem("authTokens");
           localStorage.removeItem("user");
+          localStorage.removeItem("authTokens");
         }, 1000);
       })
       .catch((err) => {
         setUser(null);
         setToken(null);
-        localStorage.removeItem("authTokens");
         localStorage.removeItem("user");
+        localStorage.removeItem("authTokens");
         toast.error(err.data.errors, {
           position: toast.POSITION.BOTTOM_CENTER,
-          autoClose: 3000,
+          autoClose: 2000,
           pauseOnFocusLoss: false,
           pauseOnHover: false,
         });
