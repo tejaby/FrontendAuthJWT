@@ -1,4 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+
+// Importación de libraries
+import { refreshService } from "../services/UserServices";
 
 const AuthContext = createContext();
 
@@ -13,6 +16,22 @@ export const AuthProvider = ({ children }) => {
       ? JSON.parse(localStorage.getItem("authTokens"))
       : null;
   });
+
+  useEffect(() => {
+    if (token) {
+      refreshService({ refresh: token.refresh })
+        .then((response) => {
+          localStorage.setItem("authTokens", JSON.stringify(response));
+        })
+        .catch((err) => {
+          console.log(err)
+          setUser(null);
+          setToken(null);
+          localStorage.removeItem("user");
+          localStorage.removeItem("authTokens");
+        });
+    }
+  }, [token]);
 
   return (
     <AuthContext.Provider

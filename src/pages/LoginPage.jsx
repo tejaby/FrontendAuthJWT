@@ -33,8 +33,8 @@ function LoginPage() {
         setTimeout(() => {
           setUser(response.user);
           setToken(response.token);
-          localStorage.setItem("authTokens", JSON.stringify(response.token));
           localStorage.setItem("user", JSON.stringify(response.user));
+          localStorage.setItem("authTokens", JSON.stringify(response.token));
           navigate("/");
         }, 1000);
       })
