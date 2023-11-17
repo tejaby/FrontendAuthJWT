@@ -56,6 +56,8 @@ export const Navbar = () => {
           pauseOnFocusLoss: false,
           pauseOnHover: false,
         });
+        localStorage.removeItem("authTokens");
+        localStorage.removeItem("user");
         setTimeout(() => {
           setUser(null);
           setToken(null);
@@ -65,6 +67,8 @@ export const Navbar = () => {
         setError(err.data.errors);
         setUser(null);
         setToken(null);
+        localStorage.removeItem("authTokens");
+        localStorage.removeItem("user");
         toast.error(error, {
           position: toast.POSITION.BOTTOM_CENTER,
           autoClose: 3000,

@@ -24,6 +24,8 @@ function LoginPage() {
   const onSubmit = async (data) => {
     loginService(data)
       .then((response) => {
+        localStorage.setItem("authTokens", JSON.stringify(response.token));
+        localStorage.setItem("user", JSON.stringify(response.user));
         toast.success(response.message, {
           position: toast.POSITION.BOTTOM_CENTER,
           autoClose: 3000,
@@ -44,7 +46,6 @@ function LoginPage() {
           pauseOnFocusLoss: false,
           pauseOnHover: false,
         });
-
       });
   };
 
