@@ -1,6 +1,9 @@
 // Importación de libraries
 import { Routes, Route } from "react-router-dom";
 import React from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // Importación de archivos de Utils
 import { PrivateRoutes } from "./utils/PrivateRoutes";
@@ -34,6 +37,7 @@ function App() {
         </Route>
         <Route path="/dashboard" Component={DashboardPage} />
       </Routes>
+      <ToastContainer />  
     </>
   );
 }

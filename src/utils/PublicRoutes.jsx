@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 
 export const PublicRoutes = ({ children }) => {
   const { user } = useAuth();
+
   if (user) {
     return <Navigate to="/" />;
   }

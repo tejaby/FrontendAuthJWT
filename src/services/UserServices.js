@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiUrl = "http://localhost:8000/";
 
-export const loginService = async (user) => {
+export const loginService = (user) => {
   return axios
     .post(`${apiUrl}login/`, user)
     .then((response) => response.data)

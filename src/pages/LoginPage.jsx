@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 // Importación de services
 import { loginService } from "../services/UserServices";
@@ -23,12 +24,27 @@ function LoginPage() {
   const onSubmit = async (data) => {
     loginService(data)
       .then((response) => {
-        setUser(response.user);
-        setToken(response.token);
-        navigate('/')
+        toast.success(response.message, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          autoClose: 3000,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+        });
+        setTimeout(() => {
+          setUser(response.user);
+          setToken(response.token);
+          navigate("/");
+        }, 1000);
       })
       .catch((err) => {
-        setError(err.data);
+        setError(err.data.errors);
+        toast.error(error, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          autoClose: 3000,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+        });
+
       });
   };
 

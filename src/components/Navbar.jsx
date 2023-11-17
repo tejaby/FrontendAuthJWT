@@ -1,5 +1,7 @@
 // Importación de libraries
 import { NavLink, Link } from "react-router-dom";
+
+import { toast } from "react-toastify";
 import {
   AppBar,
   Box,
@@ -22,7 +24,6 @@ import { logoutService } from "../services/UserServices";
 import { useAuth } from "../context/AuthContext";
 
 const pages = ["Home", "Profile", "Dashboard"];
-const settings = ["Profile", "Logout"];
 
 export const Navbar = () => {
   const { user, setUser, token, setToken } = useAuth();
@@ -48,12 +49,28 @@ export const Navbar = () => {
 
   const onSubmit = () => {
     logoutService({ refresh: token.refresh }, token.access)
-      .then(() => {
-        setUser(null);
-        setToken(null);
+      .then((response) => {
+        toast.success(response.message, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          autoClose: 1000,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+        });
+        setTimeout(() => {
+          setUser(null);
+          setToken(null);
+        }, 2000);
       })
       .catch((err) => {
-        setError(err.data);
+        setError(err.data.errors);
+        setUser(null);
+        setToken(null);
+        toast.error(error, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          autoClose: 3000,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+        });
       });
   };
 
@@ -65,7 +82,6 @@ export const Navbar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -126,7 +142,6 @@ export const Navbar = () => {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -182,19 +197,17 @@ export const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user ? ( // Verifica si el usuario está autenticado
-                settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">
-                      <Link
-                        style={{ color: "black", textDecoration: "none" }}
-                        onClick={onSubmit}
-                      >
-                        {setting}
-                      </Link>
-                    </Typography>
-                  </MenuItem>
-                ))
+              {user ? (
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">
+                    <Link
+                      style={{ color: "black", textDecoration: "none" }}
+                      onClick={onSubmit}
+                    >
+                      Logout
+                    </Link>
+                  </Typography>
+                </MenuItem>
               ) : (
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography variant="body1" color="error" textAlign="center">

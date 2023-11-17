@@ -12,5 +12,5 @@ export const PrivateRoutes = () => {
     return <Navigate to="/login" />;
   }
 
-  return <Outlet/>;
+  return <Outlet />;
 };
