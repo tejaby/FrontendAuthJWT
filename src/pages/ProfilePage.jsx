@@ -1,6 +1,8 @@
 // Importación de libraries
 import React from "react";
 
-export default function ProfilePage() {
+function ProfilePage() {
   return <div>ProfilePage</div>;
 }
+
+export default ProfilePage;
