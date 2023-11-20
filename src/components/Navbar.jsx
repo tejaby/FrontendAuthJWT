@@ -1,6 +1,6 @@
 // Importación de libraries
+import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-
 import { toast } from "react-toastify";
 import {
   AppBar,
@@ -15,7 +15,6 @@ import {
   Tooltip,
   MenuItem,
 } from "@mui/material";
-import { useState } from "react";
 
 // Importación de services
 import { logoutService } from "../services/UserServices";

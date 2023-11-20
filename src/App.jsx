@@ -1,9 +1,11 @@
 // Importación de libraries
-import { Routes, Route } from "react-router-dom";
 import React from "react";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+//Importación de components
+import { Navbar } from "./components/Navbar";
 
 // Importación de archivos de Utils
 import { PrivateRoutes } from "./utils/PrivateRoutes";
@@ -14,7 +16,6 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import DashboardPage from "./pages/DashboardPage";
-import { Navbar } from "./components/Navbar";
 
 function App() {
   return (
@@ -36,8 +37,10 @@ function App() {
           <Route path="/profile" Component={ProfilePage} />
         </Route>
         <Route path="/dashboard" Component={DashboardPage} />
+        <Route path="*" element={<h1>Page not Found</h1>} />
       </Routes>
-      <ToastContainer />  
+
+      <ToastContainer />
     </>
   );
 }
