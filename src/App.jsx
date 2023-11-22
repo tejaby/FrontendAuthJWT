@@ -30,7 +30,6 @@ function App() {
 
   useEffect(() => {
     if (token && !checkedToken) {
-      console.log("updated");
       refreshService({ refresh: token.refresh })
         .then((response) => {
           setToken(response);
