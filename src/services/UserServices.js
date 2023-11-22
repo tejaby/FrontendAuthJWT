@@ -29,3 +29,12 @@ export const refreshService = (refresh) => {
       throw err.response;
     });
 };
+
+export const listNotesService = (access) => {
+  return axios
+    .get(`${apiUrl}note/`, { headers: { Authorization: "Bearer " + access } })
+    .then((response) => response.data)
+    .catch((err) => {
+      throw err.response;
+    });
+};
