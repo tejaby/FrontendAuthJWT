@@ -54,12 +54,10 @@ export const Navbar = () => {
           pauseOnFocusLoss: false,
           pauseOnHover: false,
         });
-        setTimeout(() => {
-          setUser(null);
-          setToken(null);
-          localStorage.removeItem("user");
-          localStorage.removeItem("authTokens");
-        }, 1000);
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem("user");
+        localStorage.removeItem("authTokens");
       })
       .catch((err) => {
         setUser(null);

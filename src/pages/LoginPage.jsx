@@ -20,7 +20,7 @@ function LoginPage() {
 
   const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     loginService(data)
       .then((response) => {
         toast.success(response.message, {
@@ -29,13 +29,11 @@ function LoginPage() {
           pauseOnFocusLoss: false,
           pauseOnHover: false,
         });
-        setTimeout(() => {
-          setUser(response.user);
-          setToken(response.token);
-          localStorage.setItem("user", JSON.stringify(response.user));
-          localStorage.setItem("authTokens", JSON.stringify(response.token));
-          navigate("/");
-        }, 1000);
+        setUser(response.user);
+        setToken(response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        localStorage.setItem("authTokens", JSON.stringify(response.token));
+        navigate("/");
       })
       .catch((err) => {
         toast.error(err.data.errors, {
