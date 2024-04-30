@@ -176,7 +176,10 @@ export const Navbar = () => {
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   alt="Remy Sharp"
-                  src="https://pbs.twimg.com/profile_images/1686635817156976640/FviVdiCz_400x400.jpg"
+                  src={
+                    user &&
+                    "https://avatars.githubusercontent.com/u/123685633?v=4"
+                  }
                 />
               </IconButton>
             </Tooltip>
@@ -210,7 +213,7 @@ export const Navbar = () => {
               ) : (
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography variant="body1" color="error" textAlign="center">
-                    Please log in to view settings
+                    Please log in
                   </Typography>
                 </MenuItem>
               )}

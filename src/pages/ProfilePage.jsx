@@ -31,6 +31,7 @@ function ProfilePage() {
 
   return (
     <div>
+      <h2>notes</h2>
       {note.map((note) => (
         <ul key={note.id}>
           <li>{note.title}</li>
