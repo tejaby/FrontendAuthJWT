@@ -3,31 +3,46 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 // Importación de services
-import { listNotesService } from "../services/UserServices";
+import { listNotesService, refreshService } from "../services/UserServices";
 
 // Importación de Context
 import { useAuth } from "../context/AuthContext";
 
 function ProfilePage() {
-  const { token } = useAuth();
+  const { setUser, token, setToken } = useAuth();
   const [note, setNote] = useState([]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await listNotesService(token.access);
+        setNote(response);
+      } catch (err) {
+        if (err.status === 401 && err.data.code === "token_not_valid") {
+          try {
+            const response = await refreshService({ refresh: token.refresh });
+            setToken(response);
+            localStorage.setItem("authTokens", JSON.stringify(response));
+          } catch (err) {
+            setUser(null);
+            setToken(null);
+            localStorage.removeItem("user");
+            localStorage.removeItem("authTokens");
+            toast.error(err.data.detail, {
+              position: toast.POSITION.BOTTOM_CENTER,
+              autoClose: 3000,
+              pauseOnFocusLoss: false,
+              pauseOnHover: false,
+            });
+          }
+        }
+      }
+    };
+
     if (token && token.access) {
-      listNotesService(token.access)
-        .then((response) => {
-          setNote(response);
-        })
-        .catch((err) => {
-          toast.error(err.data.detail, {
-            position: toast.POSITION.BOTTOM_CENTER,
-            autoClose: 3000,
-            pauseOnFocusLoss: false,
-            pauseOnHover: false,
-          });
-        });
+      fetchData();
     }
-  }, [token]);
+  }, [token, setToken]);
 
   return (
     <div>
