@@ -26,31 +26,41 @@ import { useAuth } from "./context/AuthContext";
 function App() {
   const { setUser, token, setToken } = useAuth();
 
-  const [checkedToken, setCheckedToken] = useState(false);
+  const [checkedToken, setCheckedToken] = useState(true);
 
   useEffect(() => {
-    if (token && !checkedToken) {
-      refreshService({ refresh: token.refresh })
-        .then((response) => {
-          setToken(response);
-          localStorage.setItem("authTokens", JSON.stringify(response));
-        })
-        .catch((err) => {
-          setUser(null);
-          setToken(null);
-          localStorage.removeItem("user");
-          localStorage.removeItem("authTokens");
-          toast.error(err.data.detail, {
-            position: toast.POSITION.BOTTOM_CENTER,
-            autoClose: 3000,
-            pauseOnFocusLoss: false,
-            pauseOnHover: false,
-          });
-        })
-        .finally(() => {
-          setCheckedToken(true);
+    const refreshAuthToken = async () => {
+      try {
+        const response = await refreshService({ refresh: token.refresh });
+        setToken(response);
+        localStorage.setItem("authTokens", JSON.stringify(response));
+      } catch (err) {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem("user");
+        localStorage.removeItem("authTokens");
+        toast.error(err.data.detail, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          autoClose: 3000,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
         });
+      } finally {
+        setCheckedToken(false);
+      }
+    };
+
+    if (token && checkedToken) {
+      refreshAuthToken();
     }
+
+    const interval = setInterval(() => {
+      if (token) {
+        refreshAuthToken();
+      }
+    }, 240000);
+
+    return () => clearInterval(interval);
   }, [token, checkedToken]);
 
   return (
